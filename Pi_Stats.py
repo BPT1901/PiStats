@@ -20,8 +20,15 @@ def get_ip_address():
 
 #Main Function
 def display_system_stats(stdscr):
+    curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)
+    cyan = curses.color_pair(1)
+    magenta = curses.color_pair(2)
+    red = curses.color_pair(3)
+    
     stdscr.clear()
-    stdscr.addstr(0,0, 'NAS Pi in a box', curses.A_BOLD)
+    stdscr.addstr(0,30, 'NAS Pi in a box', cyan)
     stdscr.refresh()
     
     while True:
@@ -37,11 +44,12 @@ def display_system_stats(stdscr):
         stdscr.move(4, 0)
         stdscr.clrtoeol()
         
-        stdscr.addstr(2, 0, f'CPU Usage: {cpu}%')
-        stdscr.addstr(3, 0, f'RAM Usage: {ram}%')
+        #stdscr.addstr(2, 20, f"CPU Usage: {get_cpu_usage()}%", magenta)
+        stdscr.addstr(2, 30, f'CPU Usage: {cpu}%', magenta)
+        stdscr.addstr(4, 30, f'RAM Usage: {ram}%', magenta)
         #print(f'Hard Disks: {hdd}%')
-        stdscr.addstr(4, 0, f'NAS IP: {ip}')
-        stdscr.addstr(6, 0, 'BT Loves You ;)')
+        stdscr.addstr(6, 30, f'NAS IP: {ip}', magenta)
+        stdscr.addstr(8, 30, 'BT Loves You ;)',red)
         stdscr.refresh()
         
         
