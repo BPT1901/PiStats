@@ -11,11 +11,18 @@ def get_cpu_usage():
 def get_ram_usage():
     return psutil.virtual_memory().percent
 #define function to get HDD usage
-#def get_hdd_usage():
-    #return psutil.disk_usage('Macintosh HD')
+def get_hdd_usage():
+    disk_usage = psutil.disk_usage('/')
+    total_gb = disk_usage.total / (1024 ** 3)
+    used_gb = disk_usage.used / (1024 ** 3)
+    free_gb = disk_usage.free / (1024 ** 3)
+    perc_used = disk_usage.percent
+    return total_gb, used_gb, free_gb, perc_used
 #define function to get IP Address
 def get_ip_address():
-    return socket.gethostbyname(socket.gethostname())
+    hostname = socket.gethostname()
+    ip = socket.gethostbyname(hostname)
+    return ip
 
 
 #Main Function
@@ -27,6 +34,8 @@ def display_system_stats(stdscr):
     magenta = curses.color_pair(2)
     red = curses.color_pair(3)
     
+    curses.curs_set(0)
+    
     stdscr.clear()
     stdscr.addstr(0,30, 'NAS Pi in a box', cyan)
     stdscr.refresh()
@@ -35,7 +44,8 @@ def display_system_stats(stdscr):
         cpu = get_cpu_usage()
         ram = get_ram_usage()
         #hdd = get_hdd_usage()
-        ip = get_ip_address()
+        ipadd = get_ip_address()
+        total_gb, used_gb, free_gb, perc_used = get_hdd_usage()
         
         stdscr.move(2, 0)
         stdscr.clrtoeol()
@@ -44,16 +54,18 @@ def display_system_stats(stdscr):
         stdscr.move(4, 0)
         stdscr.clrtoeol()
         
-        #stdscr.addstr(2, 20, f"CPU Usage: {get_cpu_usage()}%", magenta)
         stdscr.addstr(2, 30, f'CPU Usage: {cpu}%', magenta)
-        stdscr.addstr(4, 30, f'RAM Usage: {ram}%', magenta)
-        #print(f'Hard Disks: {hdd}%')
-        stdscr.addstr(6, 30, f'NAS IP: {ip}', magenta)
-        stdscr.addstr(8, 30, 'BT Loves You ;)',red)
+        stdscr.addstr(3, 30, f'RAM Usage: {ram}%', magenta)
+        stdscr.addstr(5, 30, f'Total Disk Space: {total_gb:.1f} GB', magenta)
+        stdscr.addstr(6, 30, f'Used Disk Space: {used_gb:.1f} GB', magenta)
+        stdscr.addstr(7, 30, f'Free Disk Space: {free_gb:.1f} GB', magenta)
+        stdscr.addstr(8, 30, f'Percentage Disk used: {perc_used} %', magenta)
+        stdscr.addstr(10, 30, f'NAS IP: {ipadd}', magenta)
+        stdscr.addstr(12, 30, 'BT Loves You ;)',red)
         stdscr.refresh()
         
         
-        time.sleep(3)
+        time.sleep(2)
         
 if __name__ == "__main__":
     curses.wrapper(display_system_stats)
