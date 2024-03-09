@@ -23,7 +23,13 @@ def get_ip_address():
     hostname = socket.gethostname()
     ip = socket.gethostbyname(hostname)
     return ip
-
+#Function for the blinking character
+def switch_chars():
+    char1 = ':)'
+    char2 = ';)'
+    while True:
+        yield char1
+        yield char2
 
 #Main Function
 def display_system_stats(stdscr):
@@ -36,6 +42,8 @@ def display_system_stats(stdscr):
     red = curses.color_pair(3)
     yellow = curses.color_pair(4)
     
+    char_switch = switch_chars()
+    
     curses.curs_set(0)
     
     stdscr.clear()
@@ -45,9 +53,9 @@ def display_system_stats(stdscr):
     while True:
         cpu = get_cpu_usage()
         ram = get_ram_usage()
-        #hdd = get_hdd_usage()
         ipadd = get_ip_address()
         total_gb, used_gb, free_gb, perc_used = get_hdd_usage()
+        char = next(char_switch)
         
         stdscr.move(2, 0)
         stdscr.clrtoeol()
@@ -63,7 +71,7 @@ def display_system_stats(stdscr):
         stdscr.addstr(7, 30, f'Free Disk Space: {free_gb:.1f} GB', magenta)
         stdscr.addstr(8, 30, f'Percentage Disk used: {perc_used} %', magenta)
         stdscr.addstr(10, 30, f'NAS IP: {ipadd}', yellow)
-        stdscr.addstr(12, 30, 'BT Loves You ;)',red)
+        stdscr.addstr(12, 30, f'BT Loves You {char}',red)
         stdscr.refresh()
         
         time.sleep(2)
