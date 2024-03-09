@@ -30,9 +30,11 @@ def display_system_stats(stdscr):
     curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(4, curses.COLOR_YELLOW, curses.COLOR_BLACK)
     cyan = curses.color_pair(1)
     magenta = curses.color_pair(2)
     red = curses.color_pair(3)
+    yellow = curses.color_pair(4)
     
     curses.curs_set(0)
     
@@ -60,10 +62,9 @@ def display_system_stats(stdscr):
         stdscr.addstr(6, 30, f'Used Disk Space: {used_gb:.1f} GB', magenta)
         stdscr.addstr(7, 30, f'Free Disk Space: {free_gb:.1f} GB', magenta)
         stdscr.addstr(8, 30, f'Percentage Disk used: {perc_used} %', magenta)
-        stdscr.addstr(10, 30, f'NAS IP: {ipadd}', magenta)
+        stdscr.addstr(10, 30, f'NAS IP: {ipadd}', yellow)
         stdscr.addstr(12, 30, 'BT Loves You ;)',red)
         stdscr.refresh()
-        
         
         time.sleep(2)
         
