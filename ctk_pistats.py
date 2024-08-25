@@ -7,6 +7,7 @@ ctk.set_default_color_theme("green")
 
 app = ctk.CTk()
 app.geometry("320x240")
+app.overrideredirect(True)
 
 # function to get CPU usage
 def get_cpu_usage():
